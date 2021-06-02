@@ -1,0 +1,2 @@
+-- HR ������ ���� Ȱ��ȭ, �н����� 1234
+ALTER USER HR ACCOUNT UNLOCK IDENTIFIED BY 1234;
