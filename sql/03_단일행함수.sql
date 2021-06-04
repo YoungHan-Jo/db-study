@@ -184,6 +184,80 @@ FROM DUAL;
 SELECT TO_NUMBER('100') + 100
 FROM DUAL;
 
+-- NULL 값 처리 함수
+-- NVL함수 ( X, Y) 만약에 X 가 널값이면 Y 값으로 대체한다.
+SELECT last_name, NVL(manager_id,0) AS 매니저
+FROM employees
+WHERE last_name = 'King';
+
+--NVL2 (EX,EX1,EX2) EX 값이 널값이아닐경우 EX1로 대체, EX값이 널값이면 EX2로 대체
+SELECT employee_id,last_name, NVL2(manager_id,'O','X') AS 매니저유무
+FROM employees
+WHERE last_name = 'King';
+
+--EX1
+SELECT last_name, salary, 
+    NVL(commission_pct,0) AS 커미션, 
+    salary*12 + salary*12*NVL(commission_pct,0) AS 연봉
+FROM employees
+ORDER BY 연봉 DESC;
+
+
+--EX2
+SELECT last_name, salary, NVL(commission_pct,0) AS 커미션,
+    salary*12 + salary*12*NVL(commission_pct,0) AS 연봉,
+    NVL2(commission_pct, 'SAL+COMM', 'SAL') AS 연봉계산
+FROM employees
+ORDER BY 연봉 DESC;
+
+
+-- DECODE 함수
+SELECT last_name, job_id, salary,
+    DECODE(job_id,  'IT_PROG',  SALARY*1.10,
+                    'ST_CLERK', salary*1.15,
+                    'SA_REP',   salary*1.20,
+                                salary) AS "수정월급"
+FROM employees;
+
+--EX1
+SELECT last_name,
+    job_id,
+    salary,
+    DECODE(TRUNC(salary/2000),
+            0, 0,
+            1, 0.09,
+            2, 0.2,
+            3, 0.3,
+            4, 0.4,
+            5, 0.42,
+            6, 0.44,
+                0.45) AS 세율
+FROM employees
+ORDER BY 세율, salary ;
+
+-- CASE 함수 : 조건문에 비교를 할 수 있다.
+SELECT last_name,job_id,salary,
+    CASE WHEN salary<5000   THEN 'Low'
+         WHEN salary<10000  THEN 'Medium'
+         WHEN salary<20000  THEN 'Good'
+         ELSE                    'Excellent'
+    END AS "급여 수준"
+FROM employees;
+
+
+--EX1
+SELECT employee_id,first_name,last_name,salary,
+    CASE
+        WHEN    salary >= 9000  THEN '상위급여'
+        WHEN    salary >= 6000  THEN '중위급여'
+        Else                         '하위급여'
+    END AS 급여등급
+FROM employees
+WHERE job_id = 'IT_PROG';
+
+
+
+
 
 
 
