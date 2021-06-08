@@ -31,5 +31,17 @@ SELECT EMPNO, ENAME, HIREDATE,
 FROM EMP;
 
 -- Q4
-SELECT *
-FROM EMP
+SELECT EMPNO, ENAME, NVL2(MGR,TO_CHAR(MGR),' ') AS MGR,
+        CASE
+            WHEN MGR LIKE '75%' THEN '5555'
+            WHEN MGR LIKE '76%' THEN '6666'
+            WHEN MGR LIKE '77%' THEN '7777'
+            WHEN MGR LIKE '78%' THEN '8888'
+            ELSE                '0000'
+        END AS CHG_MGR
+            
+FROM EMP;
+
+
+
+

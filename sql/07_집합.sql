@@ -1,0 +1,74 @@
+--집합 연산자
+--UNION
+SELECT EMPLOYEE_ID, JOB_ID
+FROM employees
+UNION
+SELECT EMPLOYEE_ID, JOB_ID
+FROM job_history;
+
+--UNION ALL
+SELECT EMPLOYEE_ID, JOB_ID
+FROM employees
+UNION ALL
+SELECT EMPLOYEE_ID, JOB_ID
+FROM job_history;
+
+--INTERSECT
+SELECT EMPLOYEE_ID, JOB_ID
+FROM employees
+INTERSECT
+SELECT EMPLOYEE_ID, JOB_ID
+FROM job_history;
+
+--MINUS
+SELECT EMPLOYEE_ID, JOB_ID
+FROM employees
+MINUS
+SELECT EMPLOYEE_ID, JOB_ID
+FROM job_history;
+
+
+--EX
+SELECT department_id
+FROM employees
+UNION
+SELECT DEPARTMENT_ID
+FROM departments;
+
+--EX
+SELECT department_id
+FROM employees
+UNION ALL
+SELECT DEPARTMENT_ID
+FROM departments;
+
+--EX
+SELECT department_id
+FROM employees
+INTERSECT
+SELECT DEPARTMENT_ID
+FROM departments;
+
+
+--EX
+SELECT DEPARTMENT_ID
+FROM departments
+MINUS
+SELECT department_id
+FROM employees
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

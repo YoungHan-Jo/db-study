@@ -60,6 +60,121 @@ WHERE job_id = (SELECT job_id
 
 
 
+--다중행 서브쿼리
+-- 서브쿼리의 결과가 여러개의 행으로 나올때
+-- 연산자를 단일행과같이 쓸 수 없다.( = , >,< 부등호 사용불가)
+-- IN ANY ALL 등 여러개의 값에 쓰는 연산자 사용
+
+-- 부서별 최저월급
+SELECT department_id, MIN(salary)
+FROM employees
+GROUP BY department_id;
+
+-- 서브쿼리로 표현
+SELECT employee_id, last_name
+FROM employees
+WHERE salary IN (SELECT MIN(salary)
+                FROM employees
+                GROUP BY department_id);
+
+
+--ANY 와 ALL 연산자는 IN 과는 다르게 앞에 비교연산자가 붙음
+-- ANY 연산자 : 서브쿼리 결과중 하나라도 만족하면 된다 .OR
+
+SELECT employee_id,last_name,job_id,salary
+FROM employees
+WHERE salary < ANY (SELECT salary 
+                    FROM employees
+                    WHERE job_id ='IT_PROG')
+AND job_id != 'IT_PROG';
+
+SELECT employee_id,last_name,job_id,salary
+FROM employees
+WHERE salary < ALL (SELECT salary 
+                    FROM employees
+                    WHERE job_id ='IT_PROG')
+AND job_id != 'IT_PROG';
+
+
+--EX1
+
+SELECT employee_id, first_name, job_id, salary
+FROM employees
+WHERE manager_id IN (SELECT manager_id
+                    FROM employees
+                    WHERE department_id = 20)
+AND department_id != 20;
+
+--EX2
+SELECT employee_id,last_name,job_id,SALARY
+FROM employees
+WHERE salary < ANY (SELECT SALARY
+                    FROM employees
+                    WHERE job_id = 'ST_MAN')
+AND job_id != 'ST_MAN'
+ORDER BY SALARY;
+
+--EX3
+SELECT employee_id,last_name,job_id,salary
+FROM employees
+WHERE SALARY < ALL (SELECT SALARY
+                    FROM employees
+                    WHERE job_id ='IT_PROG')
+AND job_id != 'IT_PROG';
+
+-- 다중열 서브쿼리 : 서브쿼리 결과가 2개이상의 열로 반환, 메인쿼리와 1:1대응
+SELECT employee_id, first_name, job_id, SALARY, MANAGER_ID
+FROM employees
+WHERE (manager_id, JOB_ID) IN (SELECT MANAGER_ID, JOB_ID
+                                FROM employees
+                                WHERE first_name = 'Bruce')
+AND first_name != 'Bruce';
+
+--각 부서별로 최소급여
+SELECT department_id, employee_id,first_name,salary
+FROM employees
+WHERE (department_id, SALARY) IN (SELECT department_id, MIN(salary)
+                                    FROM employees
+                                    GROUP BY department_id)
+ORDER BY department_id;
+
+--EX
+
+SELECT FIRST_NAME, JOB_ID, SALARY, DEPARTMENT_ID
+FROM employees
+WHERE (JOB_ID, SALARY) IN (SELECT JOB_ID, MIN(SALARY)
+                            FROM employees
+                            GROUP BY JOB_ID)
+ORDER BY SALARY DESC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
